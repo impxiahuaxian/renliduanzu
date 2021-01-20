@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="qdu.java.recruit.renwu.dao.PaperDaoMapper">
+	<!-- 插入问卷 -->
+	<insert id="addPaper" parameterType="qdu.java.recruit.renwu.entity.Paper">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			select last_insert_id()
+		</selectKey>
+		insert into paper(name,data,uid,hrid,resumeId) values(#{name},#{data},#{uid},#{hrid},#{resumeId});
+	</insert>
+	<!-- 查询单个问卷 -->
+	<select id="queryOnePaper" resultMap="getOnePaper" parameterType="java.lang.Integer">
+		select paper.id     as paperid,
+       paper.name as papername,
+       paper.data,
+       paper.uid,
+       questions.id as questionsid,
+       questions.name as questionname,
+       questions.pid,
+       questions.qtype
+from paper
+         left outer join questions on paper.id = questions.pid
+        
+where paper.id =#{pid};
+	</select>
+	<resultMap type="qdu.java.recruit.renwu.entity.Paper" id="getOnePaper">
+		<id column="paperid" property="id"/>
+		<result column="papername" property="name"/>
+		<result column="data" property="data"/>
+		<result column="uid" property="uid"/>
+		<collection property="questions" ofType="qdu.java.recruit.renwu.entity.Questions">
+			<id column="questionsid" property="id"/>
+			<result column="questionname" property="name"/>
+			<result column="qtype" property="qtype"/>
+			<result column="pid" property="pid"/>
+			<collection property="answers" ofType="qdu.java.recruit.renwu.entity.Answer">
+				<id column="answerid" property="id"/>
+				<result column="content" property="content"/>
+				<result column="qid" property="qid"/>
+			</collection>
+		</collection>
+	</resultMap>
+	<!-- 查询用户问卷列表 -->
+	<select id="getUserList" parameterType="int" resultType="qdu.java.recruit.renwu.entity.Paper">
+		select * from paper where uid=#{uid} limit #{begin},#{end}
+	</select>
+	<!-- 查询问卷回答人数 -->
+	<select id="getAnswerCount" parameterType="int" resultType="int" statementType="CALLABLE">
+		call getcount3(#{pid});
+	</select>
+	<!-- 删除问卷 -->
+	<delete id="deletePaper" parameterType="int">
+		delete from paper where paper.id =#{pid}
+	</delete>
+	<!-- 查询问卷id -->
+	<select id="idPaper" parameterType="int" resultType="int" statementType="CALLABLE">
+		select id from paper where hrid = #{hrid} and resumeId=#{resumeId}
+	</select>
+</mapper>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<!--suppress CssUnusedSymbol, JSUnresolvedLibraryURL -->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>评价</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/star-main.css" media="all" type="text/css"/>
+    <script src="../js/jquery.js"></script>
+<body>
+<div class="container">
+	
+	
+    <div class="page-header">
+        <h2>开始对<span id="user" style="color: red"></span>评价</h2>
+    </div>
+    <form>
+    	<div class="panel panel-default">
+		  <div class="panel-heading" style="font-size: 2rem;">满意度&nbsp;<span style="color:red;">*</span>：</div>
+		  <div class="panel-body">
+		  	  		  <input name="starNum" id="starNum" type="hidden"/>
+                      <div class="starability-container">
+	                       <fieldset class="starability-slot">
+		                        <input type="radio" id="rate_1_0_1_5" name="starLevel" value="5" /> 
+		                        <label for="rate_1_0_1_5" title="5星"></label>
+		                        <input type="radio" id="rate_1_0_1_4" name="starLevel" value="4" /> 
+		                        <label for="rate_1_0_1_4" title="4星"></label>
+		                        <input type="radio" id="rate_1_0_1_3" name="starLevel" value="3" /> 
+		                        <label for="rate_1_0_1_3" title="3星"></label>
+		                        <input type="radio" id="rate_1_0_1_2" name="starLevel" value="2" /> 
+		                        <label for="rate_1_0_1_2" title="2星"></label>
+		                        <input type="radio" id="rate_1_0_1_1" name="starLevel" value="1" /> 
+		                        <label for="rate_1_0_1_1" title="1星"></label>
+	                       </fieldset>
+                      </div>
+                      <span style="font-size: 2rem;line-height: 2.9rem;padding: 1rem;font-style: oblique;" id="starStr"></span>
+		  </div>
+		</div>
+
+        
+		<div class="page-header">
+            <h3>评价：</h3>
+        </div>
+        <textarea id="customerEvaluationComment" name="customerEvaluationComment" 
+        	class="form-control" rows="16" style="min-width: 90%;font-size: 3rem;height: 28rem !important;"></textarea>
+		
+		<br/>
+		
+		<p class="submit_btn">
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="evaluation();">
+　　　　　　　提交　　　　　　　　
+			</button>
+			
+		</p>
+    </form>
+</div>
+</body>
+
+
+<script>
+var fln;	
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
+$(document).ready(function() { 
+    //任何需要执行的js特效
+    console.log(decodeURI(getQueryVariable("name")))
+     console.log(getQueryVariable("id"))
+     console.log(getQueryVariable("workid"))
+     $("#user").text(decodeURI(getQueryVariable("name")));
+});
+	$('[name="starLevel"]').bind("click",function(){
+		console.log($(this)[0].value)
+		$("#starNum").val($(this)[0].value)
+		var starNum = $(this)[0].value;
+		if(starNum == 1) $("#starStr").text("差");
+		if(starNum == 2) $("#starStr").text("一般");
+		if(starNum == 3) $("#starStr").text("优");
+		if(starNum == 4) $("#starStr").text("良");
+		if(starNum == 5) $("#starStr").text("满意");
+	})
+	
+	
+
+	// 提交评论
+	function evaluation() {
+		//评价等级
+
+		var customerEvaluationLevel = $('#starNum').val();
+		
+		var a = $('#customerEvaluationComment').val();
+		
+		if (customerEvaluationLevel == undefined || customerEvaluationLevel == null || customerEvaluationLevel == '') {
+			alert('请将满意度选好再提交哦！');
+			return false;
+		} else {
+			 $.ajax({
+			        type:"post",
+			        url: "http://127.0.0.1:8080/hr/pingfen",
+			        data:{
+			        	fenshu: customerEvaluationLevel,
+			        	userid: getQueryVariable("id"),
+			        	pinglun: a,
+			        	positionId: getQueryVariable("workid")
+			        },
+			        dataType:"json",
+			        success: function(msg){
+			           if(msg == 1){
+			        	   console.log("成功"),
+			        	   $.ajax({
+			        	        type:"post",
+			        	        url: "http://127.0.0.1:8080/hr/jieshu/"+getQueryVariable("id")+"/"+getQueryVariable("workid"),
+			        	        dataType:"text",
+			        	        success: function(msg){
+			        	            console.log(msg);
+			        	        },
+			        	        error: function(msg){
+			        	            console.log(msg);
+			        	        }
+			        	    });
+			        	   window.location.href="/hr/index"
+			           }else{
+			        	   console.log("失败");
+			           }
+			        },
+			        error: function(msg){
+			            console.log(msg);
+			        }
+			    });
+		}
+	}
+	
+	//关闭
+	function closed() {
+		window.close();
+	}
+	
+  
+</script>
+
+
+
+<style>
+	.page-header{
+		padding-bottom: 1px !important;
+    	margin: 18px 0 20px !important;
+	}
+	.submit_btn{
+		width: 100%;
+	}
+	.textarea.form-control{
+		height: 28rem !important;
+	}
+	h3{
+		font-size: 22px;
+	}
+	
+	h2{
+		font-size: 19px;
+	}
+</style>
+</html>

@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>网站名称</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="/js/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <script src="/js/bootstrap.js"></script>
+
+    <link rel="stylesheet" href="/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="../icon/iconfont.css"/>
+
+    <link rel="stylesheet" type="text/css" href="/css/index.css"/>
+    <link rel="stylesheet" href="/css/job-content.css"/>
+    <script src="/js/vue.min.js"></script>
+
+</head>
+<body>
+<div class="wrap">
+    <div class="header">
+
+        <div class="container row"  id="header-vue-bind-div">
+            <a class="logo"></a>
+            <ul class="nav col-lg-8">
+                <!--<li class="address">全国</li>-->
+                <li class="nav_li current"><a class="nav_item" href="/">首页</a></li>
+                <li class="nav_li"><a class="nav_item" href="/searchlist?keyword=">职位搜索</a></li>
+                <li class="nav_li"><a class="nav_item" href="https://www.xiaoyuanzhao.com/">2018校招</a></li>
+                <li class="nav_li"><a class="nav_item" href="https://www.kongzhongtalk.com/">空中宣讲</a></li>
+                <li class="nav_li"><a class="nav_item" href="/user/info?type=person">我的简历</a></li>
+            </ul>
+
+            <ul class="clear_fix col-lg-2  "  v-if="type===null">
+                <li><a class="clear_fix_item login" href="/user/login">登录</a></li>
+                <li><a class="clear_fix_item register" href="/register">注册</a></li>
+            </ul>
+
+            <ul class="clear_fix col-lg-2 " v-if="type==='user'" >
+                <li><img src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3803332007,2672307128&fm=58" alt="" class="img-circle" style="width: 48px;height: 48px"></li>
+                <li>
+
+
+                    <div class="dropdown">
+                        <a id="dLabel" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <h6>{{person.user.nickname}}</h6>
+                            <span class="caret"></span>
+                        </a>
+
+
+                        <ul class="dropdown-menu" aria-labelledby="dLabel">
+                            <li><a href="/user/info?type=person">个人中心</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/user/logout">注销</a></li>
+                        </ul>
+                    </div>
+
+                </li>
+            </ul>
+            <ul class="clear_fix col-lg-2 "  v-if="type==='hr'">
+                <li><img src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3803332007,2672307128&fm=58" alt="" class="img-circle" style="width: 48px;height: 48px"></li>
+                <li>
+
+
+                    <div class="dropdown">
+                        <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <h6 >{{person.hr.hrName}}</h6>
+                            <span class="caret"></span>
+                        </a>
+
+
+                        <ul class="dropdown-menu" aria-labelledby="dLabel">
+                            <li><a href="user/usercenter">个人中心</a></li>
+                            <li><a href="user/usercenter">管理中心</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="user/logout">注销</a></li>
+                        </ul>
+                    </div>
+
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <script>
+        var headervue = new Vue({
+            el:'#header-vue-bind-div',
+
+            data:{
+                type:null,
+                person:{
+                    user:null,
+                    hr:null
+                }
+
+            }
+        });
+    </script>
+    <hr>
+    <div class="search-content  container">
+
+        <div class="search-box text-center ">
+            <form class="text-center row" name="search_form" action="/searchlist" method="get">
+                <input class="search-input col-md-7 col-md-offset-1" id="search-input" name="keyword" type="text" placeholder="搜索职位名称关键字">
+                <input  class="col-md-2" type="submit" id="search-button" value="搜索"/>
+            </form>
+
+        </div>
+        <div class="hot-search ">
+            <dl class="row">
+                <div class="col-sm-1"></div>
+                <dt class="col-sm-1" style="padding-left: 0px;margin-left: 0px">热门搜索：</dt>
+                <dd class="col-sm-1" style="margin-left: -15px;"><a href="/searchlist?keyword=Java工程师">Java工程师</a></dd>
+                <dd style="width: 6%;margin-left: 15px;"><a href="/searchlist?keyword=数据挖掘">数据挖掘</a></dd>
+                <dd style="width: 6%;margin-left: 15px;"><a href="/searchlist?keyword=后台开发">后台开发</a></dd>
+                <dd style="width: 4%;margin-left: 15px;"><a href="/searchlist?keyword=Java">Java</a></dd>
+                <dd style="width: 4%;margin-left: 15px;"><a href="/searchlist?keyword=C++">C++</a></dd>
+                <dd style="width: 4%;margin-left: 15px;"><a href="/searchlist?keyword=Python">Python</a></dd>
+                <dd style="width: 4%;margin-left: 15px;"><a href="/searchlist?keyword=.NET工程师">.NET</a></dd>
+                <dd style="width: 4%;margin-left: 15px;"><a href="/searchlist?keyword=PHP">PHP</a></dd>
+            </dl>
+        </div>
+    </div>
+    <div class="job-nav container">
+        <div class="mainNav">
+            <div class="menu_box">
+                <div class="menu_main ">
+                    <div class="category-list ">
+                        <h4>技术</h4>
+                        <a href="/searchlist?keyword=Java">Java</a>
+                        <a href="/searchlist?keyword=PHP">PHP</a>
+                        <a href="/searchlist?keyword=C++">C++</a>
+                        <span class="right-span glyphicon glyphicon-menu-right"></span>
+                    </div>
+                </div>
+                <div class="menu_sub hidden">
+                    <dl>
+                        <dt>
+                            <span>后端开发</span>
+                        </dt>
+                        <dd>
+                            <a href="/searchlist?keyword=Java" class="current" >Java</a>
+                            <a href="/searchlist?keyword=C++" >C++</a>
+                            <a href="/searchlist?keyword=PHP" >PHP</a>
+                            <a href="/searchlist?keyword=数据挖掘" >数据挖掘</a>
+                            <a href="#" >搜索算法</a>
+                            <a href="#" >精准推荐</a>
+                            <a href="#" >C</a>
+                            <a href="#" >C#</a>
+                            <a href="#"  class="current">全栈工程师</a>
+                            <a href="#" >Hadoop</a>
+                            <a href="/searchlist?keyword=.Net" >.NET</a>
+                            <a href="/searchlist?keyword=Python" >Python</a>
+                            <a href="#" >Delphi</a>
+                            <a href="#" >VB</a>
+                            <a href="#" >Perl</a>
+                            <a href="#" >Ruby</a>
+                            <a href="#" class="current" >Node.js</a>
+                            <a href="#" >Go</a>
+                            <a href="#" >ASP</a>
+                            <a href="#" >Shell</a>
+                            <a href="#" >后端开发其它</a>
+
+                        </dd>
+
+                    </dl>
+                    <dl>
+                        <dt>
+                            移动开发
+                        </dt>
+                        <dd>
+                            <a href="#" class="current" >HTML5</a>
+                            <a href="#"  class="current">Android</a>
+                            <a href="#" >iOS</a>
+                            <a href="#" >WP</a>
+                            <a href="#" >移动开发其它</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            前端开发
+                        </dt>
+                        <dd>
+                            <a href="#" class="current">web前端</a>
+                            <a href="#" >Flash</a>
+                            <a href="#" class="current">JavaScript</a>
+                            <a href="#" >U3D</a>
+                            <a href="#" >Shell</a>
+                            <a href="#" >COCOS2D-X</a>
+                            <a href="#" >前端开发其它</a>
+
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            人工智能
+                        </dt>
+                        <dd>
+                            <a href="#" class="current">深度学习</a>
+                            <a href="#" class="current">机器学习</a>
+                            <a href="#" >图像处理</a>
+                            <a href="#" >图像识别</a>
+                            <a href="#" >语音识别</a>
+                            <a href="#" >机器视觉</a>
+                            <a href="#" >算法工程师</a>
+                            <a href="#" >自然语言处理</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            测试
+                        </dt>
+                        <dd>
+                            <a href="#" >测试工程师</a>
+                            <a href="#" >自动化测试</a>
+                            <a href="#" >功能测试</a>
+                            <a href="#" >性能测试</a>
+                            <a href="#" >测试开发</a>
+                            <a href="#" >游戏测试</a>
+                            <a href="#" >白盒测试</a>
+                            <a href="#" >灰盒测试</a>
+                            <a href="#" >黑盒测试</a>
+                            <a href="#" >手机测试</a>
+                            <a href="#" >硬件测试</a>
+                            <a href="#" >测试经理</a>
+
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>
+                            运维
+                        </dt>
+                        <dd>
+                            <a href="#" >运维工程师</a>
+                            <a href="#" >网络工程师</a>
+                            <a href="#" >系统工程师</a>
+                            <a href="#" >IT支持</a>
+                            <a href="#" >CDN</a>
+                            <a href="#" >系统管理员</a>
+                            <a href="#" >网络安全</a>
+                            <a href="#" >系统安全</a>
+                            <a href="#" >运维经理</a>
+                            <a href="#" >运维其他</a>
+
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="menu_box">
+                <div class="menu_main ">
+                    <div class="category-list ">
+                        <h4>居家</h4>
+                        <a href="/searchlist?keyword=保姆">保姆</a>
+                        <a href="/searchlist?keyword=家教">家教</a>
+                        <a href="/searchlist?keyword=装修">装修</a>
+                        <span class="right-span glyphicon glyphicon-menu-right"></span>
+                    </div>
+                </div>
+                <div class="menu_sub hidden">
+                    <dl>
+                        <dt>安心阿姨</dt>
+                        <dd>
+                            <a href="/searchlist?keyword=保姆" class="current" >保姆</a>
+                            <a href="/searchlist?keyword=钟点工" >钟点工</a>
+                            <a href="/searchlist?keyword=育儿师" >育儿师</a>
+                            <a href="/searchlist?keyword=催乳师" >催乳师</a>
+                            <a href="/searchlist?keyword=保姆" class="current" >月嫂</a>
+                            <a href="/searchlist?keyword=管家" >管家</a>
+                            <a href="/searchlist?keyword=家政" >家政</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>家教</dt>
+                        <dd>
+                            <a href="/searchlist?keyword=语文" >语文家教</a>
+                            <a href="/searchlist?keyword=数学" >数学家教</a>
+                            <a href="/searchlist?keyword=英语" >英语家教</a>
+                            <a href="/searchlist?keyword=物理" >物理家教</a>
+                            <a href="/searchlist?keyword=化学" >化学家教</a>
+                            <a href="/searchlist?keyword=生物" >生物家教</a>
+                            <a href="/searchlist?keyword=地理" >地理家教</a>
+                            <a href="/searchlist?keyword=计算机" >计算机家教</a>
+                        </dd>
+                    </dl>
+                     <dl>
+                        <dt>装修</dt>
+                        <dd>
+                            <a href="/searchlist?keyword=精装" >精装</a>
+                           
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="menu_box">
+                <div class="menu_main ">
+                    <div class="category-list ">
+                        <h4>日常</h4>
+                        <a href="/searchlist?keyword=导游">导游</a>
+                        <a href="/searchlist?keyword=化妆师">化妆师</a>
+                        
+                        <span class="right-span glyphicon glyphicon-menu-right"></span>
+                    </div>
+                </div>
+                <div class="menu_sub hidden">
+                    <dl>
+                        <dt>配送</dt>
+                        <dd>
+                            <a href="/searchlist?keyword=专人专送" class="current">专人专送</a>
+                            <a href="/searchlist?keyword=大桶水" class="current">大桶水</a>
+                            <a href="/searchlist?keyword=机场接送" >机场接送</a>
+                       
+                        </dd>
+                    </dl>
+                 <dl>
+                        <dt>日常</dt>
+                        <dd>
+                            <a href="/searchlist?keyword=洗衣" class="current">洗衣</a>
+                            <a href="/searchlist?keyword=护理" class="current">护理</a>
+                      		 <a href="/searchlist?keyword=洗车" class="current">洗车</a>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="menu_box">
+                <div class="menu_main ">
+                    <div class="category-list ">
+                        <h4>维修</h4>
+                        <a href="#">电子维修</a>
+                        <a href="#">家庭维修</a>
+                    
+                        <span class="right-span glyphicon glyphicon-menu-right"></span>
+                    </div>
+                </div>
+                <div class="menu_sub hidden">
+                    <dl>
+                        <dt>电子维修</dt>
+                        <dd>
+                            <a href="/searchlist?keyword=电脑维修" >电脑维修</a>
+                            <a href="/searchlist?keyword=服务器维修" >服务器维修</a>
+                            <a href="/searchlist?keyword=平板维修" class="current">平板维修</a>
+                            <a href="/searchlist?keyword=手机维修" >手机维修</a>
+                            <a href="/searchlist?keyword=网络维修" >网络维修</a>
+                            <a href="/searchlist?keyword=游戏机维修" >游戏机维修</a>
+                            <a href="/searchlist?keyword=相机维修" >相机维修</a>
+                            <a href="/searchlist?keyword=摄像机维修" >摄像机维修</a>
+                            <a href="/searchlist?keyword=游戏机维修" >游戏机维修</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>家电维修</dt>
+                        <dd>
+                            <a href="/searchlist?keyword=防水补漏" >防水补漏</a>
+                            <a href="/searchlist?keyword=水管维修" >水管维修</a>
+                            <a href="/searchlist?keyword=电器维修" >电器维修</a>
+                            <a href="/searchlist?keyword=门窗维修" >门窗维修</a>
+                            <a href="/searchlist?keyword=家电维修" >家电维修</a>
+                            <a href="/searchlist?keyword=家具维修" >家具维修</a>
+                            <a href="/searchlist?keyword=开锁换锁" >开锁换锁</a>
+                        </dd>
+                    </dl>
+                   
+                </div>
+            </div>
+           
+            <div class="menu_box">
+                <div class="menu_main ">
+                    <div class="category-list ">
+                        <h4>职能</h4>
+                        <a href="/searchlist?keyword=导游">导游</a>
+                        <a href="/searchlist?keyword=设计师">设计师</a>
+                        <a href="/searchlist?keyword=厨师">厨师</a>
+                        <a href="/searchlist?keyword=美容美发">美容美发</a>
+                        <span class="right-span glyphicon glyphicon-menu-right"></span>
+                    </div>
+                </div>
+                <div class="menu_sub hidden">
+                    <dl>
+                        <dt>导游</dt>
+                        <dd>
+                            <a href="/searchlist?keyword=导游" >全职导游</a>
+                            <a href="/searchlist?keyword=导游" class="current" >地接导游</a>
+                            <a href="/searchlist?keyword=导游" >景区导游</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>厨师</dt>
+                        <dd>
+                            <a href="/searchlist?keyword=川菜" >川菜</a>
+                            <a href="/searchlist?keyword=粤菜" >粤菜</a>
+                        	<a href="/searchlist?keyword=鲁菜" >鲁菜</a>
+                        	<a href="/searchlist?keyword=苏菜" >苏菜</a>
+                        	<a href="/searchlist?keyword=闽菜" >闽菜</a>
+                        	<a href="/searchlist?keyword=浙菜" >浙菜</a>
+                        	<a href="/searchlist?keyword=湘菜" >湘菜</a>
+                        	<a href="/searchlist?keyword=徽菜" >徽菜</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>设计师</dt>
+                        <dd>
+                            <a href="/searchlist?keyword=室内" >室内</a>
+                            <a href="/searchlist?keyword=室外" >室外设计师</a>
+                       
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>美容美发</dt>
+                        <dd>
+                            <a href="/searchlist?keyword=美发"class="current" >美发</a>
+                            <a href="/searchlist?keyword=美容" >美容</a>
+                            <a href="/searchlist?keyword=按摩" >按摩</a>
+							<a href="/searchlist?keyword=化妆师" >化妆师</a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>婚庆礼仪</dt>
+                        <dd>
+                            <a href="/searchlist?keyword=婚庆"class="current" >婚庆礼仪</a>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="menu_box">
+                <div class="menu_main ">
+                    <div class="category-list ">
+                        <h4>其他</h4>
+                     
+                        <span class="right-span glyphicon glyphicon-menu-right"></span>
+                    </div>
+                </div>
+                <div class="menu_sub hidden">
+                    <dl>
+                        <dt>其他</dt>
+                        <dd>
+                            <a href="#" >其他</a>
+                          
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>其他</dt>
+                        <dd>
+                        
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>其他</dt>
+                        
+                    </dl>
+
+                </div>
+            </div>
+        </div>
+        <div class="home-banner">
+            <div id="myCarousel" data-interval="4000" class="carousel slide">
+                <!-- 轮播（Carousel）指标 -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active slide-spot"></li>
+                    <li data-target="#myCarousel" data-slide-to="1" class="slide-spot"></li>
+                    <li data-target="#myCarousel" data-slide-to="2" class="slide-spot"></li>
+                </ol>
+                <!-- 轮播（Carousel）项目 -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="/img/poster1.png" alt="First slide">
+                    </div>
+                    <div class="item">
+                        <img src="/img/poster2.png" alt="Second slide">
+                    </div>
+                    <div class="item">
+                        <img src="img/poster3.png" alt="Third slide">
+                    </div>
+                </div>
+                <!-- 轮播（Carousel）导航 -->
+                <!--<a class="carousel-control left" href="#myCarousel"-->
+                <!--data-slide="prev"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>-->
+                <!--</a>-->
+
+                <!--<a class="carousel-control right" href="#myCarousel"-->
+                <!--data-slide="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
+                <!--</a>-->
+            </div>
+        </div>
+    </div>
+    <!--职位列表-->
+    <div class="job-list-container container">
+        <div class="jot-tab-content row">
+            <div class="line">
+                <ul class="col-md-4 no-margin-bottom">
+                    <li class="nav_item col-md-4 active"><a  class="" href="#">热门推荐</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="job-summary-container container">
+            <!--<div class="content " id="job-content">-->
+
+            <!--<div class="col-lg-4 summary-border" id="job-box" v-for="job in jobs">-->
+            <!--<div class="job-summary">-->
+            <!--<div class="line-1 row">-->
+            <!--<div class="job-name col-md-9"><a href="">{{job.title}}</a><span class="create-item">两日前发布<span class="lianxi iconfont icon-lianxi"></span> </span></div>-->
+            <!--<div class="job-salary col-md-3  text-right">8K-15K</div>-->
+            <!--</div>-->
+            <!--<div class="line-2 job-require">大学本科学历</div>-->
+            <!--<div class="line-3 job-tag-content row">-->
+            <!--<ul class="" >-->
+            <!--<li class="col-md-3 job-tag" >Hadoop</li>-->
+            <!--<li class="col-md-3 job-tag" >架构师</li>-->
+            <!--&lt;!&ndash;!!!!!!!TAG&ndash;&gt;-->
+            <!--</ul>-->
+            <!--</div>-->
+            <!--<div class="company">-->
+            <!--<img style="width: 40px;height: 40px" class="img-rounded" src="http://static.lagou.com/thumbnail_100x100/i/image/M00/68/A7/CgqKkVgRYweAD4MtAAAzR3Jd4fM663.png"/>-->
+            <!--<div class="company-right">-->
+            <!--<div class="row company-name">-->
+            <!--<a :href="">中国移动</a>-->
+            <!--</div>-->
+            <!--<div class="row company-description">-->
+            <!--大型互联网上市公司-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+
+
+
+            <!--</div>-->
+            <div class="content " id="job-content">
+                <div class="col-lg-4 summary-border" id="job-box" v-for="job in jobs">
+                    <div class="job-summary">
+                        <div class="line-1 row">
+                            <div class="job-name col-md-8"><a :href="'http://127.0.0.1:8080/position/'+job.positionId">{{job.title}}</a><span class="create-item">数日前发布<span class="lianxi iconfont icon-lianxi"></span> </span></div>
+                            <div class="job-salary col-md-4  text-right">{{Math.floor(job.salaryDown/1000)}}K-{{Math.floor(job.salaryUp/1000)}}K</div>
+                        </div>
+                        <div class="line-2 job-require"><!--{{job.requirement}}--></div>
+                        <div class="line-3 job-tag-content row">
+                            <ul class="" >
+                                <li class="col-md-3 job-tag" >数据分析</li>
+                                <li class="col-md-3 job-tag" >全栈开发</li>
+                            </ul>
+                        </div>
+                        <div class="company">
+                            <img style="width: 40px;height: 40px" class="img-rounded" :src="'/img/img'+job.companyId+'.jpg'"/>
+                            <div class="company-right">
+                                <div class="row company-name">
+                                    <a href="">{{job.companyName}}</a>
+                                </div>
+                                <div class="row company-description" v-if="job.companyId>0">
+                                    大型互联网公司/上市公司
+                                </div>
+                                  <div class="row company-description" v-else>
+                                    优质职位
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/index.js"></script>
+
+    <!--查看更多-->
+    <div class="container viewMoreContainer">
+        <div class="row">
+            <div class="viewMore" id="viewMoreButton" onclick="nextPage()">查看更多</div>
+        </div>
+    </div>
+    <!--//关于我们横线-->
+    <div class="job-list-container container">
+        <div class="jot-tab-content row">
+            <div class="line">
+                <ul class="col-md-4 no-margin-bottom">
+                    <li class="nav_item col-md-4 active"><a  class="" href="#">关于我们</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--友情链接-->
+    <!--<div id="test">-->
+    <!--<ul  >-->
+
+    <!--<li v-for="job in jobs">{{job.title}}</li>-->
+    <!--</ul>-->
+    <!--</div>-->
+</div>
+<script>
+    //    #TAB配置
+    $(".menu_box").hover(function () {
+        $(this).find(".menu_sub").removeClass("hidden");
+        $(this).find(".menu_sub").addClass("show");
+    },function () {
+        $(this).find(".menu_sub").removeClass("show");
+        $(this).find(".menu_sub").addClass("hidden");
+    });
+
+    $('#myCarousel').carousel({
+        interval: 3000
+    })
+</script>
+
+</body>
+</html>

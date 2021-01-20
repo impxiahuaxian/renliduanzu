@@ -1,0 +1,75 @@
+package qdu.java.recruit.renwu.controller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import qdu.java.recruit.renwu.entity.Questions;
+import qdu.java.recruit.renwu.entity.ResponseMessage;
+import qdu.java.recruit.renwu.service.QuestionDaoService;
+
+@Controller
+public class QuestionController {
+	
+	@Autowired
+	private QuestionDaoService service;
+	
+	/*
+	 * 添加题目
+	 */
+	@RequestMapping(value="addQuestion.action",method=RequestMethod.POST)
+	public @ResponseBody ResponseMessage addQuestion(@RequestBody Questions question,HttpServletRequest request) {
+		int id = (int) request.getSession().getAttribute("addpaperid");
+		question.setPid(id);
+		request.getSession().removeAttribute("questionid");
+		request.getSession().setAttribute("questionid", question.getId());
+		System.out.println(question);
+		boolean flag=service.addQuestion(question);
+		ResponseMessage message = new ResponseMessage();
+		message.setFlag(flag);
+		if(flag) {
+			message.setMessage("添加成功");
+		}else {
+			message.setMessage("添加失败");
+		}
+		return message;
+	}
+	
+	/*
+	 * 更新问题
+	 */
+	@RequestMapping(value="updataQuestion.action",method = RequestMethod.POST)
+	public @ResponseBody ResponseMessage updataQuestion(@RequestBody Questions question) {
+		boolean flag =service.updateQuestion(question);
+		ResponseMessage message = new ResponseMessage();
+		message.setFlag(flag);
+		if(flag) {
+			message.setMessage("更新成功");
+		}else {
+			message.setMessage("更新失败");
+		}
+		return message;
+	}
+	
+	/*
+	 * 删除问题
+	 */
+	@RequestMapping(value="deleteQuestion.action",method = RequestMethod.POST)
+	public @ResponseBody ResponseMessage deleteQuestion(int id) {
+		boolean flag=service.deleteQuestion(id);
+		ResponseMessage message = new ResponseMessage();
+		message.setFlag(flag);
+		if(flag) {
+			message.setMessage("删除成功");
+		}else {
+			message.setMessage("删除失败");
+		}
+		return message;
+	}
+	
+}

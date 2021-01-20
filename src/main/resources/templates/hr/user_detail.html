@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网站名称</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../css/bootstrap.css"/>
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="../../icon/iconfont.css">
+    <link rel="stylesheet" href="/css/job_details.css"/>
+    <link rel="stylesheet" type="text/css" href="/layer/css/layui.css"/>
+    <link href="/css/star-rating.css" media="all" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" type="text/css" href="/css/tiankuang.css"/>
+    <script src="../../js/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+            integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+            crossorigin="anonymous"></script>
+    <script src="/js/vue.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/layer/layui.js"></script>
+    <script src="/js/star-rating.js" type="text/javascript"></script>
+</head>
+<body>
+<div class="wrap">
+    <div class="header">
+
+        <div class="container row" id="header-vue-bind-div">
+            <a class="logo"></a>
+            <ul class="nav col-lg-8">
+                <!--<li class="address">全国</li>-->
+                <li class="nav_li"><a class="nav_item" href="/hr/index">首页</a></li>
+                <li class="nav_li current"><a class="nav_item" href="/searchlist?keyword=">职位搜索</a></li>
+                <li class="nav_li"><a class="nav_item" href="https://www.xiaoyuanzhao.com/">2018校招</a></li>
+                <li class="nav_li"><a class="nav_item" href="https://www.kongzhongtalk.com/">空中宣讲</a></li>
+                <li class="nav_li"><a class="nav_item" href="/hr/info?type=person">我的简历</a></li>
+            </ul>
+
+            <ul class="clear_fix col-lg-2  " v-if="type===null">
+                <li><a class="clear_fix_item login" href="/user/login">登录</a></li>
+                <li><a class="clear_fix_item register" href="/register">注册</a></li>
+            </ul>
+
+            <ul class="clear_fix col-lg-2 " v-if="type==='user'">
+                <li><img src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3803332007,2672307128&fm=58" alt=""
+                         class="img-circle" style="width: 48px;height: 48px"></li>
+                <li>
+
+
+                    <div class="dropdown">
+                        <a id="dLabel" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <h6>{{person.user.nickname}}</h6>
+                            <span class="caret"></span>
+                        </a>
+
+
+                        <ul class="dropdown-menu" aria-labelledby="dLabel">
+                            <li><a href="/user/info">个人中心</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/user/logout">注销</a></li>
+                        </ul>
+                    </div>
+
+                </li>
+            </ul>
+            <ul class="clear_fix col-lg-2 " v-if="type==='hr'">
+                <li><img src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3803332007,2672307128&fm=58" alt=""
+                         class="img-circle" style="width: 48px;height: 48px"></li>
+                <li>
+
+                    <div class="dropdown">
+                        <a data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <h6>{{person.hr.hrName}}</h6>
+                            <span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu" aria-labelledby="dLabel">
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/user/logout">注销</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <script>
+            var header = new Vue({
+                el: '#header-vue-bind-div',
+                data: {
+                    type: null,
+                    person: {
+                        user: null,
+                        hr: null
+                    }
+                }
+            });
+        </script>
+    </div>
+
+
+    <hr class="no-bottom"/>
+    
+    <div id="position_content">
+    <div id="light" class="white_content">
+          <h2>选择的你发布的职位</h2>
+           <div class="container box-container">
+                    <table class="table table-striped table-hover" id = "test">
+                        <tr>
+                            <th>#</th>
+                            <th>职位</th>
+                            <th>工作地</th>
+                            <th>需要人数</th>
+                            <th>工资</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr v-for="(positionEnt,index) in positionEntitiess" class="collection-item">
+                            <td>{{index}}</td>
+                            <td>{{positionEnt.title}}</td>
+                            <td>{{positionEnt.workCity}}</td>
+                            <td>{{positionEnt.quantity}}</td>
+                            <td style="color:red">{{(positionEnt.salaryUp)/1000}}k-{{(positionEnt.salaryDown)/1000}}k</td>
+                            <td style="display:none">{{positionEnt.positionId}}</td>
+                            <td style="display:none">{{position.userId}}</td>
+                            <td>
+                                <button id="posDetermine" type="button" class="btn btn-info btn-sm" onclick="posDetermine(this)">
+                                   		就这个了
+                                </button>
+                             </td>
+                        
+                    </table>
+                </div>
+            <a href = "javascript:void(0)" onclick = "closeDialog()">点这里关闭本窗口</a>
+        </div> 
+        <div id="fade" class="black_overlay"></div> 
+        <div class="details_content">
+            <div class="job-header-content ">
+                <div class="job-header">
+                    <div class="job-name">
+                        {{position.name}}
+                    </div>
+                    
+                    <div class="job-request">
+                        <p>
+                            <span class="salary">姓名</span>
+                            <span></span>
+                            <!--<span>/{{position.requirement}}/</span>-->
+                            <span></span>
+                            <span></span>
+                        </p>
+                        <ul class="position-label" style="margin-top:10px;">
+                            <li class="job-label">短聘</li>
+                            <li class="job-label">专业</li>
+                            <li class="job-label">{{category.description}}</li>
+                        </ul>
+                        <p class="publish_time">用户浏览量：{{position.hits}}</p>
+                    </div>
+                    <div class="position-content-r" style="max-width: 430px;">
+                        <div class="position-deal">
+                            <div class="collection">
+                                <!-- <a id="favor_tag"></a> -->
+                                <a href = "javascript:void(0)" onclick ="openDialog()">用他</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail container">
+            <div class="content_l">
+                <br class="job_detail">
+  
+
+                <h4><b>一.个人介绍：</b></h4>
+              	  姓名：{{position.name}}<br/>
+               	 住址：{{position.city}}<br/>
+               	 手机号：{{position.mobile}}<br/>
+               	 邮件：{{position.email}}<br/>
+               	 学历：{{position.eduDegree}}<br/>
+               	 学校：{{position.graduation}}<br/>
+               	 专业：{{position.major}}<br/>
+                <br/><h4><b>二.专业能力：</b></h4>
+               		 专业能力：{{resume.ability}}<br/>
+                <br/><h4><b>三.实习经历：</b></h4>
+                	实习经历：{{resume.internship}}<br/>
+				<br/><h4><b>四.工作经历：</b></h4>
+          			工作经历：{{resume.workExperience}}<br/>
+          		<br/><h4><b>五..获奖荣誉：</b></h4>	
+          		<img :src="'/zhengshu/'+resume.certificate+'.jpg'" alt="">
+					<br/>
+				<br/><h4><b>六.就职期望：</b></h4>
+					就职期望：{{resume.jobDesire}}<br/>
+                <div class="interview_experience " id="position_comment">
+                    <div class="review_anchor">职位评价</div>
+                    <div class="review-area">
+                        <div class="list-empty" v-if="!reviews">
+                            <i></i> 该职位尚未收到面试评价
+                        </div>
+                        <div class="list-notempty container" v-if="reviews">
+                            <div class="row review">
+                                <ul class="layui-timeline" style="padding-top: 30px;     width: 656px;">
+                                    <li class="layui-timeline-item" v-for="review in reviews">
+                                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                        <div class="layui-timeline-content layui-text">
+                                            <h3 class="layui-timeline-title">{{review.userName}}</h3>
+                                            <p>
+                                                {{review.reviewDetail}}
+                                            </p>
+                                            <p>
+                                                {{review.fenshu}}分
+                                            </p>
+                                        </div>
+                                    </li>
+
+
+                                </ul>
+                            </div>
+                        </div>
+                      
+                    </div>
+                </div>
+          
+        <script type="text/javascript">
+      
+        function openDialog(){
+            document.getElementById('light').style.display='block';
+            document.getElementById('fade').style.display='block'
+        }
+        function closeDialog(){
+            document.getElementById('light').style.display='none';
+            document.getElementById('fade').style.display='none'
+        }
+    </script>
+        
+                <script>
+                    //                    var comment = new Vue({
+                    //                        el: '#position_comment',
+                    //                        data: {
+                    //                            reviews: [
+                    ////                                {
+                    ////                                    userName: null,
+                    ////                                    reviewDetail: null
+                    ////                                }
+                    ////                            {
+                    ////                                userName: '测试',
+                    ////                                reviewDetail: '测试'
+                    ////                            },
+                    ////                                {
+                    ////                                    userName: '测试2',
+                    ////                                    reviewDetail: '测试2'
+                    ////                                }
+                    //                            ]
+                    //                        }
+                    //                    });
+
+                    var layedit;
+                    var index;
+                    layui.use('layedit', function () {
+                        layedit = layui.layedit;
+                        index = layedit.build('review-editor', {
+                            tool: ['strong'
+                                , 'italic' //斜体
+                                , 'underline' //下划线
+                                , 'del' //删除线
+                                , '|' //分割线
+                            ],
+                            height: 200
+                        }); //建立编辑器
+                    });
+                </script>
+            </div>
+
+
+            <div class="content_r">
+                <div class="thumbnail">
+                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510069084770&di=039cecda74d59029496cb5459a6e64e8&imgtype=0&src=http%3A%2F%2Fdown.cnshu.cn%2F2013%2Fcnshu_images%2Fchenchunhong%2F201310070942.png"
+                         alt="...">
+                    <div class="caption">
+                        <h3>广告位</h3>
+                        <p>抖音关注影视会馆，你想看的这里都有,西瓜视频关注我叫下划线，看大四狗一步一步的创业之路</p>
+                        <p><a href="" class="btn btn-primary" role="button">查看</a> <a href="" class="btn btn-default"
+                                                                                      role="button">关闭</a></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <script src="/js/position_detail1.js"></script>
+</div>
+</body>
+</html>

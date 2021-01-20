@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>问卷调查</title>
+    <link rel="stylesheet" href="/css/index1.css"/>
+    <script src="../js/jquery.js"></script>
+</head>
+<a href="/hr/index"><img src="/img/ai207.png" alt="" id = "imggg"></a>
+<body>
+<div class="center">
+    <a href="" id = "ceshi"><button >发布计划</button></a>
+</div>
+<script type="text/javascript">
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
+  window.onload = function(){
+	    console.log(getQueryVariable("id"))
+	     console.log(getQueryVariable("workid"))
+	     var nwl = "/createnew?id="+getQueryVariable("id")+"&workid="+getQueryVariable("workid");
+	     $("#ceshi").attr("href",nwl);
+  };
+</script>
+</body>
+</html>
